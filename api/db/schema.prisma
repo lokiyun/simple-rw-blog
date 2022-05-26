@@ -1,0 +1,74 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = "native"
+}
+
+model User {
+  id        String   @id @unique @default(uuid())
+  username  String   @unique @map("user_name")
+  password  String   @default("")
+  nickName  String?  @default("") @map("nick_name")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  avatar    String?  @default("")
+  roles     String   @default("moderator")
+
+  hashedPassword      String
+  salt                String
+  resetToken          String?
+  resetTokenExpiresAt DateTime?
+
+  post Post[]
+}
+
+model Category {
+  id        String   @id @unique @default(uuid())
+  name      String   @unique
+  desc      String   @default("")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  post Post[]
+}
+
+model Tag {
+  id        String    @id @unique @default(uuid())
+  name      String    @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  PostTag   PostTag[]
+}
+
+model Post {
+  id         String   @id @unique @default(uuid())
+  title      String   @default("")
+  desc       String   @default("")
+  content    String   @default("")
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  author    User      @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime?
+  PostTag   PostTag[]
+}
+
+model Image {
+  id  String @id @unique @default(uuid())
+  url String @default("")
+}
+
+model PostTag {
+  id     String @id @unique @default(uuid())
+  postId String
+  post   Post   @relation(fields: [postId], references: [id])
+  tagId  String
+  tag    Tag    @relation(fields: [tagId], references: [id])
+}
