@@ -200,6 +200,7 @@ const PostPage = () => {
             <Pagination
               style={{ marginTop: '1rem', textAlign: 'right' }}
               total={data?.postPage.count}
+              pageSize={5}
               current={current}
               onChange={handleChangePagination}
             />

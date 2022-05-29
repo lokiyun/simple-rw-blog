@@ -108,7 +108,7 @@ const UserPage = () => {
 
   useEffect(() => {
     if (!loading) {
-      setUsers(data.users)
+      setUsers(data?.users)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading])

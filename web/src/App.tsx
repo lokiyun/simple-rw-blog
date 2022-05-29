@@ -11,6 +11,7 @@ import './scaffold.css'
 import './index.css'
 import { LightTheme } from './utils/themes'
 import GlobalStyle from './utils/GlobalStyle'
+import Loading from './components/Loading/Loading'
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
@@ -22,6 +23,7 @@ const App = () => (
             <ThemeProvider theme={LightTheme}>
               <Routes />
             </ThemeProvider>
+            <Loading />
           </RecoilRoot>
         </RedwoodApolloProvider>
       </AuthProvider>

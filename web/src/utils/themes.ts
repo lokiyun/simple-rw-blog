@@ -3,5 +3,5 @@ export const LightTheme = {
   body: '#dfe6e9',
   primary: '#74b9ff',
   second: '#55efc4',
-  fontFfamily: '"ZCOOL KuaiLe",cursive',
+  fontFamily: '"ZCOOL KuaiLe",cursive',
 }

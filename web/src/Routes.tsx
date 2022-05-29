@@ -10,6 +10,7 @@
 import { Router, Route, Set, Private } from '@redwoodjs/router'
 import { AnimatePresence } from 'framer-motion'
 import AdminLayout from './layouts/AdminLayout/AdminLayout'
+import BlogLayout from './layouts/BlogLayout/BlogLayout'
 import ArticleWritePage from './pages/ArticleWritePage/ArticleWritePage'
 
 export const pageTransition = {
@@ -38,7 +39,10 @@ const Routes = () => {
         <Route path="/signup" page={SignupPage} name="signup" />
         <Route path="/forgot-password" page={ForgotPasswordPage} name="forgotPassword" />
         <Route path="/reset-password" page={ResetPasswordPage} name="resetPassword" />
-        <Route path="/" page={HomePage} name="home" />
+        <Set wrap={BlogLayout}>
+          <Route path="/" page={HomePage} name="home" />
+          <Route path="/article/{id:String}" page={ArticlePage} name="article" />
+        </Set>
 
         <Private unauthenticated="home">
           <Set wrap={AdminLayout} key={location.pathname}>

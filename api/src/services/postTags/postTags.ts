@@ -5,7 +5,11 @@ import type {
   PostTagResolvers,
 } from 'types/graphql'
 
-export const tagsByPostId: QueryResolvers['postTags'] = async ({ postId }) => {
+export const tagsByPostId: QueryResolvers['postTags'] = async ({
+  postId,
+}: {
+  postId: string
+}) => {
   console.log(postId)
   const result = await db.postTag.findMany({
     where: { postId },
