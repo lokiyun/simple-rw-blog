@@ -18,6 +18,7 @@ const PostList = ({ data }) => {
           title={item.title}
           createAt={item?.createdAt}
           category={item?.category?.name}
+          categoryId={item?.category?.id}
           tags={item?.PostTag}
           key={item.id}
         />

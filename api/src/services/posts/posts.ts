@@ -5,14 +5,14 @@ import type {
   PostResolvers,
 } from 'types/graphql'
 
-const POSTS_PER_PAGE = 5
+const PER_PAGE = +process.env.DEFAULT_PAGINATION_SIZE
 
 export const postPage = ({ page = 1 }) => {
-  const offset = (page - 1) * POSTS_PER_PAGE
+  const offset = (page - 1) * PER_PAGE
 
   return {
     posts: db.post.findMany({
-      take: POSTS_PER_PAGE,
+      take: PER_PAGE,
       skip: offset,
       orderBy: { createdAt: 'desc' },
     }),
@@ -20,8 +20,26 @@ export const postPage = ({ page = 1 }) => {
   }
 }
 
+export const postPageByCategory = ({ page = 1, category }) => {
+  const offset = (page - 1) * PER_PAGE
+
+  return {
+    posts: db.post.findMany({
+      where: { categoryId: category },
+      take: PER_PAGE,
+      skip: offset,
+      orderBy: { createdAt: 'desc' },
+    }),
+    count: db.post.count({
+      where: { categoryId: category },
+    }),
+  }
+}
+
 export const posts: QueryResolvers['posts'] = () => {
-  return db.post.findMany()
+  return db.post.findMany({
+    orderBy: { createdAt: 'desc' },
+  })
 }
 
 export const post: QueryResolvers['post'] = ({ id }) => {

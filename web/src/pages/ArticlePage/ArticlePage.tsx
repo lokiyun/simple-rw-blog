@@ -1,6 +1,7 @@
 import { MetaTags, useQuery } from '@redwoodjs/web'
 import styled from 'styled-components'
 import * as marked from 'marked'
+import useLoading from 'src/hooks/useLoading'
 
 type ArticlePageProps = {
   id: string
@@ -24,7 +25,7 @@ const articleQuery = gql`
   }
 `
 
-const Container = styled.div`
+const Container = styled.article`
   display: flex;
   flex-direction: column;
   width: 60%;
@@ -33,12 +34,15 @@ const Container = styled.div`
   padding: 1rem 2rem;
 `
 
-const Title = styled.h2`
-  font-size: 2.5rem;
+const Title = styled.h1`
+  /* font-size: 2.5rem; */
+  word-break: break-all;
+  width: 100%;
 `
 
 const Desc = styled.div`
   padding: 1rem;
+  /* margin-top: 0.5rem; */
   background-color: #ececec;
 `
 
@@ -55,16 +59,16 @@ const ArticlePage = (props: ArticlePageProps) => {
     },
   })
 
+  const loadingState = useLoading(loading)
+
   return (
     <>
-      <MetaTags title="Article" description="Article page" />
+      <MetaTags title={data?.post?.title} description={data?.post?.desc} />
 
-      {loading ? (
-        '加载中'
-      ) : (
+      {!loading && !loadingState && (
         <Container>
-          <Title>{data.post.title}</Title>
-          <Desc>{data.post.desc}</Desc>
+          <Title>{data?.post?.title}</Title>
+          <Desc>{data?.post?.desc}</Desc>
           <Content
             dangerouslySetInnerHTML={{
               __html: marked.parse(data.post.content),

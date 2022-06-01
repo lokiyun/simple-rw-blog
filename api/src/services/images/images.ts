@@ -1,14 +1,14 @@
 import { db } from 'src/lib/db'
 import type { QueryResolvers, MutationResolvers } from 'types/graphql'
 
-const IMAGES_PER_PAGE = 5
+const PER_PAGE = +process.env.DEFAULT_PAGINATION_SIZE
 
 export const imagePage = ({ page = 1 }) => {
-  const offset = (page - 1) * IMAGES_PER_PAGE
+  const offset = (page - 1) * PER_PAGE
 
   return {
     images: db.image.findMany({
-      take: IMAGES_PER_PAGE,
+      take: PER_PAGE,
       skip: offset,
     }),
     count: db.image.count(),

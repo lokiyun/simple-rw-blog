@@ -11,6 +11,7 @@ import { Router, Route, Set, Private } from '@redwoodjs/router'
 import { AnimatePresence } from 'framer-motion'
 import AdminLayout from './layouts/AdminLayout/AdminLayout'
 import BlogLayout from './layouts/BlogLayout/BlogLayout'
+import ArticlesByCategoryPage from './pages/ArticlesByCategoryPage/ArticlesByCategoryPage'
 import ArticleWritePage from './pages/ArticleWritePage/ArticleWritePage'
 
 export const pageTransition = {
@@ -35,15 +36,6 @@ const Routes = () => {
   return (
     <AnimatePresence>
       <Router>
-        <Route path="/login" page={LoginPage} name="login" />
-        <Route path="/signup" page={SignupPage} name="signup" />
-        <Route path="/forgot-password" page={ForgotPasswordPage} name="forgotPassword" />
-        <Route path="/reset-password" page={ResetPasswordPage} name="resetPassword" />
-        <Set wrap={BlogLayout}>
-          <Route path="/" page={HomePage} name="home" />
-          <Route path="/article/{id:String}" page={ArticlePage} name="article" />
-        </Set>
-
         <Private unauthenticated="home">
           <Set wrap={AdminLayout} key={location.pathname}>
             <Route path="/admin/user" page={UserPage} name="user" />
@@ -54,6 +46,16 @@ const Routes = () => {
             <Route path="/admin/article-write" page={ArticleWritePage} name="articleWrite" />
           </Set>
         </Private>
+        <Route path="/login" page={LoginPage} name="login" />
+        <Route path="/signup" page={SignupPage} name="signup" />
+        <Route path="/forgot-password" page={ForgotPasswordPage} name="forgotPassword" />
+        <Route path="/reset-password" page={ResetPasswordPage} name="resetPassword" />
+        <Set wrap={BlogLayout}>
+          <Route path="/article/{id:String}" page={ArticlePage} name="article" />
+          <Route path="/articles-by-category/{id:String}" page={ArticlesByCategoryPage} name="articlesByCategory" />
+          <Route path="/archive" page={ArchivePage} name="archive" />
+          <Route path="/" page={HomePage} name="home" />
+        </Set>
         <Route notfound page={NotFoundPage} />
       </Router>
     </AnimatePresence>

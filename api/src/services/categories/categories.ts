@@ -5,14 +5,14 @@ import type {
   CategoryResolvers,
 } from 'types/graphql'
 
-const CATEGORIES_PER_PAGE = 5
+const PER_PAGE = +process.env.DEFAULT_PAGINATION_SIZE
 
 export const categoryPage = ({ page = 1 }) => {
-  const offset = (page - 1) * CATEGORIES_PER_PAGE
+  const offset = (page - 1) * PER_PAGE
 
   return {
     categories: db.category.findMany({
-      take: CATEGORIES_PER_PAGE,
+      take: PER_PAGE,
       skip: offset,
       orderBy: { createdAt: 'desc' },
     }),

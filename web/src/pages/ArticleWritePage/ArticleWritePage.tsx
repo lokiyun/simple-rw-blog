@@ -1,4 +1,4 @@
-import { Link, routes } from '@redwoodjs/router'
+import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags, useMutation } from '@redwoodjs/web'
 import styled from 'styled-components'
 import MarkdownIt from 'markdown-it'
@@ -164,21 +164,31 @@ const ArticleWritePage = () => {
           const resultTags = res.data.tags.filter((item: Tag) =>
             tags.some((tag) => tag === item.name)
           )
+          const list = []
+          list.push()
           resultTags.forEach((item: Tag) => {
-            createPostTag({
-              variables: {
-                input: {
-                  tagId: item.id,
-                  postId: id,
+            list.push(
+              createPostTag({
+                variables: {
+                  input: {
+                    tagId: item.id,
+                    postId: id,
+                  },
                 },
-              },
-            })
+              })
+            )
           })
+
+          return Promise.all(list)
         })
       })
-      .then(() => {
+      .then((res) => {
+        console.log(res)
         // -> 4. 关闭弹窗并返回文章页面
-        setOpen(false)
+        unstable_batchedUpdates(() => {
+          setOpen(false)
+          navigate(routes.post())
+        })
       })
   }
 
@@ -264,8 +274,8 @@ const ArticleWritePage = () => {
           </Select>
           <Select
             mode="tags"
-            style={{ width: '100%' }}
-            placeholder="选择标签(s)"
+            style={{ width: '100%', marginTop: '1rem' }}
+            placeholder="选择标签(可多选)"
             onChange={handleChangeTags}
           >
             {tagList?.tags.map((item: Tag) => (

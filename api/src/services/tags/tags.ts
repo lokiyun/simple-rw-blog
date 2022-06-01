@@ -5,14 +5,14 @@ import type {
   TagResolvers,
 } from 'types/graphql'
 
-const TAGS_PER_PAGE = 5
+const PER_PAGE = +process.env.DEFAULT_PAGINATION_SIZE
 
 export const tagPage = ({ page = 1 }) => {
-  const offset = (page - 1) * TAGS_PER_PAGE
+  const offset = (page - 1) * PER_PAGE
 
   return {
     tags: db.tag.findMany({
-      take: TAGS_PER_PAGE,
+      take: PER_PAGE,
       skip: offset,
       orderBy: { createdAt: 'desc' },
     }),

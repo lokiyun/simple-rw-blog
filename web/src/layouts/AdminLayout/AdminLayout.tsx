@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { unstable_batchedUpdates } from 'react-dom'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
-import { navigate } from '@redwoodjs/router'
+import { navigate, routes } from '@redwoodjs/router'
 
 import './index.css'
 import { useRecoilState } from 'recoil'
@@ -65,6 +65,27 @@ const AsideSelected = styled(motion.div)<{ index: number }>`
   top: ${(props) => props.index * 4 + 4.5 + 'rem'};
 `
 
+const BackBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3rem;
+
+  font-size: 1rem;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    opacity: 0.85;
+    background-color: ${(props) => props.theme.primary};
+    color: #ffffff;
+  }
+`
+
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const asideList = [
     {
@@ -112,6 +133,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </AsideItem>
         ))}
         <AsideSelected index={adminIndex} layoutId={selectLabel} />
+        <BackBtn
+          onClick={() => {
+            navigate(routes.home())
+          }}
+        >
+          返回博客
+        </BackBtn>
       </Aside>
 
       <Main>{children}</Main>

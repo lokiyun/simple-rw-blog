@@ -3,11 +3,15 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "user_name" TEXT NOT NULL,
     "password" TEXT NOT NULL DEFAULT '',
-    "nick_name" TEXT NOT NULL DEFAULT '',
+    "nick_name" TEXT DEFAULT '',
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL,
-    "avatar" TEXT NOT NULL DEFAULT '',
-    "roles" TEXT NOT NULL DEFAULT 'moderator'
+    "avatar" TEXT DEFAULT '',
+    "roles" TEXT NOT NULL DEFAULT 'moderator',
+    "hashedPassword" TEXT NOT NULL,
+    "salt" TEXT NOT NULL,
+    "resetToken" TEXT,
+    "resetTokenExpiresAt" DATETIME
 );
 
 -- CreateTable

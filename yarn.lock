@@ -10442,7 +10442,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:1.x":
+"dayjs@npm:1.x, dayjs@npm:^1.11.2":
   version: 1.11.2
   resolution: "dayjs@npm:1.11.2"
   checksum: 90bc4605d1733ac0f90faa11255ef862322ce94795ee256aa56007df000f6225e4031afdb6c764c791ed303c433f88832a7572c461fd53fb0ad5cd334a46c866
@@ -24723,6 +24723,7 @@ __metadata:
     "@types/react-table": ^7.7.12
     "@types/styled-components": ^5.1.25
     antd: ^4.20.6
+    dayjs: ^1.11.2
     filestack-react: ^4.0.1
     framer-motion: ^6.3.4
     markdown-it: ^13.0.1

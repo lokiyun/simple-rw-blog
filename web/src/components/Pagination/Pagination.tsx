@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -127,9 +127,9 @@ const Pagination = ({
             ))
           : null}
       </NumsWrapper>
-      <RightBtn onClick={handleNext}>上一页</RightBtn>
+      <RightBtn onClick={handleNext}>下一页</RightBtn>
     </Container>
   )
 }
 
-export default Pagination
+export default memo(Pagination)

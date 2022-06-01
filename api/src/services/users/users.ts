@@ -5,14 +5,14 @@ import type {
   UserResolvers,
 } from 'types/graphql'
 
-const USERS_PER_PAGE = 5
+const PER_PAGE = +process.env.DEFAULT_PAGINATION_SIZE
 
 export const userPage = ({ page = 1 }) => {
-  const offset = (page - 1) * USERS_PER_PAGE
+  const offset = (page - 1) * PER_PAGE
 
   return {
     users: db.user.findMany({
-      take: USERS_PER_PAGE,
+      take: PER_PAGE,
       skip: offset,
       orderBy: { createdAt: 'desc' },
     }),

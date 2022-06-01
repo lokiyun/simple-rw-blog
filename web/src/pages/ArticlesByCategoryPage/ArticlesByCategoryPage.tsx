@@ -1,15 +1,26 @@
 import { MetaTags } from '@redwoodjs/web'
-import Banner from 'src/components/Banner/Banner'
-import PostList from 'src/components/PostList/PostList'
 import styled from 'styled-components'
 import { useLazyQuery } from '@apollo/client'
-import { useCallback, useLayoutEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Pagination from 'src/components/Pagination/Pagination'
+import PostList from 'src/components/PostList/PostList'
 import useLoading from 'src/hooks/useLoading'
 
-const homePostsQuery = gql`
-  query homePostsQuery($page: Int) {
-    postPage(page: $page) {
+const Container = styled.div`
+  display: flex;
+`
+
+const Main = styled.main`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 2rem;
+`
+
+const homePostsByCategoryQuery = gql`
+  query homePostsByCategoryQuery($page: Int, $category: String) {
+    postPageByCategory(page: $page, category: $category) {
       posts {
         id
         title
@@ -33,73 +44,55 @@ const homePostsQuery = gql`
   }
 `
 
-const Container = styled.div`
-  display: flex;
-`
+type ArticlesByCategoryProps = {
+  id: string
+}
 
-const Main = styled.main`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 2rem;
-`
-
-const NoArticle = styled.div`
-  height: 10rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-`
-
-const HomePage = () => {
-  const [getPosts, { data, loading }] = useLazyQuery(homePostsQuery)
+const ArticlesByCategoryPage = (props: ArticlesByCategoryProps) => {
+  const { id } = props
+  const [getPosts, { data, loading }] = useLazyQuery(homePostsByCategoryQuery)
   const [current, setCurrent] = useState(1)
 
   const loadingState = useLoading(loading)
 
-  const getPostbyCB = useCallback(() => {
+  useEffect(() => {
     getPosts({
       variables: {
         page: 1,
+        category: id,
       },
     })
-  }, [getPosts])
-
-  useLayoutEffect(() => {
-    getPostbyCB()
-  }, [getPostbyCB])
+  }, [])
 
   const handleChangeCurrent = (index: number) => {
     setCurrent(index)
     getPosts({
       variables: {
         page: index,
+        category: id,
       },
     })
   }
 
   return (
     <>
-      <MetaTags title="Home" description="Home page" />
-
-      {current === 1 && <Banner />}
+      <MetaTags
+        title="ArticlesByCategory"
+        description="ArticlesByCategory page"
+      />
 
       <Container>
         <Main>
-          {!loadingState && data?.postPage.count > 0 ? (
+          {!loadingState && (
             <>
-              <PostList data={data?.postPage?.posts} />
+              <PostList data={data?.postPageByCategory?.posts} />
               <Pagination
                 current={current}
-                count={data?.postPage?.count}
+                count={data?.postPageByCategory?.count}
                 pageSize={5}
                 onSelect={handleChangeCurrent}
               />
             </>
-          ) : (
-            <NoArticle>暂无文章</NoArticle>
           )}
         </Main>
         {/* <Aside /> */}
@@ -108,4 +101,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default ArticlesByCategoryPage
